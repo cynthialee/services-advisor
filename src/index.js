@@ -10,7 +10,8 @@ var $ = require('jquery'),
     categoryFilter = require("./CategoryFilter"),
     proximityFilter = require("./ProximityFilter"),
     regionFilter = require("./RegionFilter"),
-    UserLocation = require('./UserLocation');
+    UserLocation = require('./UserLocation'),
+    request = require('request'); 
 // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
 require('mapbox.js');
 // Use Awesome Markers lib to produce font-icon map markers
@@ -346,10 +347,20 @@ function renderServiceText(feature, style) {
     partnerName = feature.properties.partnerName;
     var logo = partnerName;
     var logoUrl = './src/images/partner/' + partnerName.toLowerCase().replace(' ', '') + '.jpg';
-    var http = new XMLHttpRequest();
-    http.open('HEAD', logoUrl, false);
-    http.send();
-    if (http.status != 404) {
+    // var http = new XMLHttpRequest();
+    // http.open('HEAD', logoUrl, false);
+    
+    var httpResponseCode;
+    request(logoUrl, function (err, resp) {
+        if(!err){
+          httpResponseCode = resp.statusCode;
+        }
+       // file does not exist
+    });
+
+    // sends the http request
+    // http.send();
+    if (httpResponseCode && httpResponseCode != 404) {
         logo = '<img src="' + logoUrl + '" alt="' + partnerName + '" />';
     }
 
