@@ -3,7 +3,9 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     source = require('vinyl-source-stream'),
     watchify = require('watchify'),
-    pathUtil = require('path');
+    pathUtil = require('path'),
+	uglify = require('gulp-uglify'),
+	concat = require('gulp-concat');
 
 
 var dest = path('./');
@@ -16,7 +18,7 @@ gulp.task('sass', function () {
 
 gulp.task('default', ['watch']);
 
-gulp.task('watch', ['watchify', 'sass'], function() {
+gulp.task('watch', ['watchify', 'sass', 'compress'], function() {
   gutil.log('running sass');
   gulp.watch('./scss/*.scss', ['sass']);
 });
@@ -41,6 +43,13 @@ gulp.task('watchify', function () {
     }
 
     return rebundle();
+});
+
+gulp.task('compress', function() {
+ return gulp.src('js/app.js')
+   .pipe(concat('app.min.js'))
+   .pipe(uglify())
+   .pipe(dest('js/'));
 });
 
 function path() {
