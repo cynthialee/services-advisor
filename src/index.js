@@ -190,14 +190,42 @@ $(".advanced-search > h4").click(function(e) {
 
 // Map/list view toggler - make "map" active on initial page load.
 $("#mapToggle").addClass("active");
+
 // Bind click of toggler to swapping visibility of map and list.
 $("#map-list-toggler").click(function(e) {
   e.preventDefault();
-  $("#map").toggle();
-  $("#list").toggle();
-  $("#mapToggle").toggleClass("active");
-  $("#listToggle").toggleClass("active");
+  console.log("target: " + e.target.id);
+  var id = e.target.id;
+  toggle(id);
+  //e.target.id
+  // $("#map").toggle();
+  // $("#list").toggle();
+  // $("#searchGrid").toggle();
+  // $("#mapToggle").toggleClass("active");
+  // $("#listToggle").toggleClass("active");
+  // $("#searchGridToggle").toggleClass("active");
+
+
+
 });
+
+var toggle = function (id){
+    if (id == 'mapToggle'){
+     $("#listToggle").removeClass("active");
+     $("#searchGridToggle").removeClass("active");
+      $("#mapToggle").addClass("active");
+
+    }else if(id == 'listToggle'){
+      $("#mapToggle").removeClass("active");
+     $("#searchGridToggle").removeClass("active");
+      $("#listToggle").addClass("active");
+      
+    }else if(id == 'searchGridToggle'){
+       $("#mapToggle").removeClass("active");
+     $("#listToggle").removeClass("active");
+      $("#searchGridToggle").addClass("active");
+    }
+}
 
 // When a popup is opened, bind its "show details" link to switch to list view.
 map.on('popupopen', function(e){
@@ -287,6 +315,10 @@ function render() {
     // Initialize the list-view output.
     var listOutput = '<h3 class="hide">Services</h3>';
 
+    // Initialize the search-grid
+    var searchGridOutput = '<h3>Searh Grid Output</h3>';
+
+
     // Initialize a list where we'll store the current markers for easy reference when
     // building the "show on map" functionality.  TODO: can we streamline this out?
     var markers = {};
@@ -301,8 +333,14 @@ function render() {
         listOutput += renderServiceText(feature, "list");
     } );
 
+    //just adding some of the html elements
+    searchGridOutput += renderSearchGrid();
+
     // Replace the contents of the list div with this new, filtered output.
     $('#list').html(listOutput);
+
+    // Replace the content of the search grid
+    $('#searchGrid').html(searchGridOutput);
 
     // According functionality for the list - expand item when its header is clicked
     $(".serviceText > header").click(function(event) {
@@ -337,6 +375,11 @@ function render() {
             .setLatLng(markers[id]._latlng)
             .setContent(markers[id].getPopup()._content));
     });
+}
+
+// Rendering all the search grid views
+function renderSearchGrid(){
+    var hours = '<h1><strong>Just for testing</strong></h1> ';
 }
 
 // Prepare text output for a single service, to show in the map popups or the list view.
