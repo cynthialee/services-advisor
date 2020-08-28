@@ -18,7 +18,6 @@ DEVELOPING
 While developing, run gulp in the background - ie, run "gulp" in a terminal and
 leave it running.  It will automatically recompile app.js as you edit the src files.
 
-
 Files:
 
 - LICENSE.txt - the MIT license
